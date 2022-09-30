@@ -35,6 +35,7 @@ runs:
         
           CHART_NAME=$(basename ${CHART_PATH})
           for OVERRIDE_PATH in ${OVERRIDES_DIR}/*; do
+            FILE_NAME=""
             # if a dir does not start with eks, it's either a manifest for legacy cluster or a bogus dir
             if [[ $OVERRIDE_PATH == "kubernetes/deployments/eks"* ]]; then
               if test -f ${OVERRIDE_PATH}/${CHART_NAME}.config.yaml; then
@@ -43,11 +44,14 @@ runs:
                 FILE_NAME=$(find $OVERRIDE_PATH -maxdepth 1 -mindepth 1 -name "*_${CHART_NAME}.config.yaml")
               else
                 echo "Could not find override yaml file in ${OVERRIDE_PATH} for ${CHART_NAME} chart (${CHART_PATH})."
+                continue
               fi
             else
               echo "Unknown override file path: ${OVERRIDE_PATH}"
+              continue
             fi
             # We specify git_hash, git_branch so that the rendered chart is as close to production environment as possible. Namespace, however, is specified at deploy time so we cannot figure it out at build time, therefore it's hardcoded. 
+            echo "Validating ${CHART_PATH} -f ${FILE_NAME}"
             helm template ${CHART_PATH} -f ${FILE_NAME} --set git_hash=${{ github.event.pull_request.head.sha }} --set git_branch=${{ github.head_ref }} --set namespace=default | kyverno apply kyverno_policies.yaml --resource - -f kyverno_context.yaml
           done
         done
