@@ -7,7 +7,7 @@ Example:
 ```
 jobs:
   run:
-    runs-on: self-hosted
+    runs-on: [self-hosted,ts-large-x64-docker-large]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
