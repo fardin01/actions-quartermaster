@@ -24,4 +24,7 @@ updates:
       - tradeshift-gcr
     schedule:
       interval: daily
-
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
