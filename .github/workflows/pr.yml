@@ -41,3 +41,4 @@ jobs:
           context: quartermaster
           repository: eu.gcr.io/tradeshift-public/validate
           password: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_KEY_NOBASE64 }}
+          platform: linux/amd64,linux/arm6
