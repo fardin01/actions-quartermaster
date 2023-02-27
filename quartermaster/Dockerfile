@@ -1,4 +1,4 @@
-FROM eu.gcr.io/tradeshift-public/helm-check:0.27.4 as helm
+FROM eu.gcr.io/tradeshift-public/helm-check:0.27.7 as helm
 FROM eu.gcr.io/tradeshift-public/k8s-helm:v3.5.3
 
 RUN apk add bash curl
